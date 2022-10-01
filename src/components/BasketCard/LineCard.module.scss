@@ -1,0 +1,43 @@
+.card {
+  border: 2px solid #f3f3f3;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & + & {
+    margin-top: 20px;
+  }
+
+  .preview {
+    max-width: 70px;
+    max-height: 70px;
+    object-fit: cover;
+  }
+
+  .info {
+    margin-left: 20px;
+    margin-right: 12px;
+    width: 150px;
+  }
+  .description {
+    margin-bottom: 8px;
+  }
+  .price {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  .delete {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    background-color: #fff;
+  }
+}

@@ -28,16 +28,11 @@ function App() {
                 </button>
               </div>
               <div className="products__items">
-                <Card cardInfo={DB_cards[0]} />
-                <Card cardInfo={DB_cards[1]} />
-                <Card cardInfo={DB_cards[2]} />
-                <Card cardInfo={DB_cards[3]} />
-                <Card cardInfo={DB_cards[4]} />
-                <Card cardInfo={DB_cards[5]} />
-                <Card cardInfo={DB_cards[6]} />
-                <Card cardInfo={DB_cards[7]} />
-                <Card cardInfo={DB_cards[8]} />
-                <Card cardInfo={DB_cards[9]} />
+                {
+                  DB_cards.map(card => 
+                    <Card cardInfo={card}/>
+                  )
+                }
               </div>
             </div>
           </div>

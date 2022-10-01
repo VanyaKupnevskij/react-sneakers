@@ -1,0 +1,110 @@
+.card {
+  position: relative;
+  border: 2px solid #f3f3f3;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+  top: 0px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    top: -3px;
+    box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.1);
+
+    .preview {
+      transform: scale(1.1) translateX(-5px) translateY(-10px) rotate(-7deg);
+    }
+  }
+
+  .favorite {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border-radius: 7px;
+    border: 2px solid #e7e7e7;
+    cursor: pointer;
+    z-index: 3;
+
+    &_img {
+      max-width: 14px;
+
+      path {
+        fill: #fff;
+        stroke-width: 2px;
+        stroke: #e7e7e7;
+      }
+    }
+  }
+
+  .liked {
+    border: none;
+    background-color: #fcdede;
+
+    .favorite_img path {
+      stroke: none;
+      fill: #ff8585;
+    }
+  }
+
+  .preview {
+    position: relative;
+    max-width: 133px;
+    object-fit: contain;
+    padding-top: 60px;
+    transition: 0.2s;
+    transform: scale(1) translateX(0px) translateY(0) rotate(0deg);
+  }
+
+  .descr {
+    margin: 14px 30px;
+    max-width: 150px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  .buy {
+    width: 150px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 34px;
+
+    p {
+      font-weight: 500;
+      font-size: 11px;
+      line-height: 13px;
+      text-transform: uppercase;
+      color: #bdbdbd;
+    }
+  }
+  .price {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000;
+  }
+  .buy_btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    border: 2px solid #e7e7e7;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .clicked {
+    border: none;
+    background: linear-gradient(180deg, #89f09c 0%, #3cc755 100%);
+  }
+}

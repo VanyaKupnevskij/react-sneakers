@@ -1,0 +1,102 @@
+.header
+{
+    padding-top: 44px;
+    border-bottom: 1px solid #EAEAEA;
+
+    .inner
+    {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 44px;
+    }
+
+    // name block
+    .name_block
+    {
+        display: flex;
+    }
+    .logo_img
+    {
+        object-fit: cover;
+        max-width: 40px;
+    }
+    .name
+    {
+        margin-left: 16px;
+
+        &_title
+        {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 24px;
+            text-transform: uppercase;
+        }
+        &_description
+        {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 17px;
+            color: #9D9D9D;
+        }
+    }
+}
+
+.menu
+{
+    &_list
+    {
+        display: flex;
+    }
+
+    .basket
+    {
+        margin-right: 30px;
+
+        &_link
+        {
+            border: none;
+            background-color: transparent;
+            display: flex;
+            cursor: pointer;
+        }
+        &_img
+        {
+            max-width: 18px;
+        }
+        &_price
+        {
+            margin-left: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 17px;
+            color: #5C5C5C;
+        }
+    }
+
+    .favorite
+    {
+        margin-right: 30px;
+
+        &_img path
+        {
+            transition: 0.1s;
+            stroke: #9B9B9B;
+            fill: #fff;
+
+            &:hover
+            {
+                stroke: #FF8585;
+                fill: #FF8585;
+            }
+        }
+    }
+
+    .profile
+    {
+        &_img
+        {
+            max-height: 20px;
+        }
+    }
+}

@@ -1,0 +1,135 @@
+.side_basket {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(#000, 0.5);
+
+  .inner {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    min-width: 385px;
+    background-color: #fff;
+    box-shadow: -10px 4px 24px rgba(0, 0, 0, 0.2);
+    padding: 32px 30px;
+  }
+
+  .title {
+    margin-bottom: 30px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100% - 64px);
+  }
+
+  .product_list {
+    overflow: auto;
+    flex-grow: 1;
+  }
+
+  .total {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 19px;
+  }
+
+  .result_line {
+    flex-grow: 1;
+    margin: 0 9px;
+    border-bottom: 1px dashed #dfdfdf;
+  }
+
+  .tax {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .btn {
+    position: relative;
+    background: #9dd558;
+    border-radius: 18px;
+    border: none;
+    padding: 18px 5px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    color: #ffffff;
+    transition: 0.2s;
+
+    &_img {
+      position: absolute;
+      top: 0;
+      right: 30px;
+      bottom: 0;
+      height: 100%;
+      width: 16px;
+      transition: 0.2s;
+    }
+
+    &:hover {
+      background: #8abb4e;
+
+      &-img {
+        transform: translateX(10px);
+      }
+    }
+  }
+
+  .message {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .btn {
+      width: 245px;
+      padding-left: 30px;
+
+      img {
+        left: 31px;
+      }
+    }
+    .btn:hover img {
+      transform: translateX(-10px);
+    }
+
+    .ready {
+      .subtitle {
+        color: #87c20a;
+      }
+    }
+  }
+
+  .image {
+    object-fit: contain;
+    max-width: 120px;
+    display: inline-block;
+    margin-bottom: 21px;
+  }
+
+  .description {
+    max-width: 261px;
+    margin: 9px 0 40px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(#000, 0.4);
+  }
+}

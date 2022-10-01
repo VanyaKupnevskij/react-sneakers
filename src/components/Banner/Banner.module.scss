@@ -1,0 +1,151 @@
+.banner
+{
+
+    .inner
+    {
+        position: relative;
+        margin-top: 45px;
+    }
+
+    .btn
+    {
+        position: absolute;
+        top: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        border: none;
+        border-radius: 43px;
+        background: #FFFFFF;
+        transition: 0.2s;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+
+        &_prev
+        {
+            left: 0;
+            transform: translateX(-50%);
+
+            &:hover
+            {
+                transform: translateX(-50%) translateX(-5px);
+            }
+        }
+
+        &_next
+        {
+            right: 0;
+            transform: translateX(50%);
+
+            &:hover
+            {
+                transform: translateX(50%) translateX(5px);
+            }
+        }
+    }
+
+    .items
+    {
+        display: flex;
+    }
+
+    .item
+    {
+        padding: 16px 20px;
+        background: #F4EFE9;
+        border-radius: 20px;
+        width: 100%;
+        //overflow: hidden;
+
+        &_logo
+        {
+            object-fit: contain;
+            max-width: 99px;
+            background-repeat: no-repeat;
+        }
+
+        &_text_vertical
+        {
+            position: absolute;
+            right: 5px;
+            top: 40px;
+            transform: rotate(-90deg);
+            font-weight: 600;
+            color: #98c31e;
+        }
+
+        &_title
+        {
+            margin: 32px 20px 27px 41px;
+            font-weight: 700;
+            font-size: 38px;
+            line-height: 46px;
+
+            span
+            {
+                color: #8BB43C;
+            }
+        }
+
+        &_link
+        {
+            position: relative;
+            padding: 14px 52px;
+            margin-left: 40px;
+            margin-bottom: 52px;
+            display: inline-block;
+            background: #A5D364;
+            border-radius: 110px;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 19px;
+            text-align: center;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            transition: 0.2s;
+            transform: scale(1);
+            overflow: hidden;
+
+            &:hover
+            {
+                transform: scale(1.1);
+
+                &::after
+                {
+                    left: 110%;
+                }
+            }
+
+            &::after
+            {
+                content: '';
+                position: absolute;
+                left: -20px;
+                top: -50%;
+                height: 200%;
+                width: 15px;
+                transition: all 0.3s;
+                background-color: rgba(#fff, 0.3);
+                transform: rotate(-30deg);
+            }
+        }
+
+        &_img1
+        {
+            position: absolute;
+            max-width: 280px;
+            right: 305px;
+            bottom: 0;
+        }
+        
+        &_img2
+        {
+            position: absolute;
+            max-width: 320px;
+            right: 0;
+            bottom: 0;
+        }
+    }
+}
