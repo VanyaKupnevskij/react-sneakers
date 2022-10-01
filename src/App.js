@@ -13,6 +13,7 @@ function App() {
       
       <SidePanel/>
       <Header/>
+      <Header/>
 
       <main className="main">
         <Banner/>
