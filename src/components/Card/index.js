@@ -1,4 +1,5 @@
 import React from 'react'
+import { priceToString } from "../../myService";
 
 import styles from "./Card.module.scss";
 
@@ -24,7 +25,7 @@ function Card(props)
             <img className={styles.preview} src={cardInfo.preview} alt="product img"/>
             <h6 className={styles.descr}>{ cardInfo.name }</h6>
             <div className={styles.buy}>
-                <p>Цена:<br/><span className={styles.price}>{ cardInfo.price } грн.</span></p>
+                <p>Цена:<br/><span className={styles.price}>{ priceToString(cardInfo.price) } грн.</span></p>
                 <button className={`${styles.buy_btn} ${(cardInfo.inBasket ? styles.clicked : "")}`} onClick={() => clickBuyHandler(cardInfo)}>
                     <img src={cardInfo.inBasket ? "images/approve.svg" : "images/add.svg"} alt="to backet"/>
                 </button>

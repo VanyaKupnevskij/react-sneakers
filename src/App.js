@@ -20,22 +20,22 @@ function App() {
   const getData = () => {
     fetch('http://192.168.0.104:5008/api/products')
       .then((resp) => resp.json())
-      .then((res) => {console.log(res); return setProducts(res);})
+      .then((res) => {return setProducts(res);})
       .catch((err) => console.log(err));
 
     fetch('http://192.168.0.104:5008/api/favorites/'+idUser)
       .then((resp) => resp.json())
-      .then((res) => {console.log(res); return setFavorites(res);})
+      .then((res) => {return setFavorites(res);})
       .catch((err) => console.log(err));
 
     fetch('http://192.168.0.104:5008/api/orders/basket/'+idUser)
       .then((resp) => resp.json())
-      .then((res) => {console.log(res); return setBasket(res);})
+      .then((res) => {return setBasket(res);})
       .catch((err) => console.log(err));
 
     fetch('http://192.168.0.104:5008/api/orders/purchases/'+idUser)
       .then((resp) => resp.json())
-      .then((res) => {console.log(res); return setPurchases(res);})
+      .then((res) => {return setPurchases(res);})
       .catch((err) => console.log(err));
   }
 
@@ -88,7 +88,7 @@ function App() {
           prod = o;
         }
       });
-      console.log(sendData);
+
       fetch('http://192.168.0.104:5008/api/favorites', {
           method: 'DELETE', 
           headers: {
@@ -99,9 +99,6 @@ function App() {
       .then((response) => response.json())
       .then((d) => {
         const index = favorites.indexOf(prod);
-        console.log(d);
-        console.log(prod);
-        console.log(index);
         if (index > -1) { 
           favorites.splice(index, 1); 
         }
@@ -186,7 +183,7 @@ function App() {
       
       { 
         isOpenBasket && 
-        <SidePanel basket={basket} handlerBasket={onBasketOpen}/> 
+        <SidePanel basket={basket} setBasket={setBasket} handlerBasket={onBasketOpen}/> 
       }
       <Header handlerBasket={onBasketOpen} />
 

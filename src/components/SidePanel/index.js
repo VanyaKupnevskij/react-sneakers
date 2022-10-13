@@ -5,7 +5,7 @@ import { priceToString } from "../../myService";
 var stateDisp = 'empty';
 
 function SidePanel(props) {
-  const { basket, handlerBasket } = props;
+  const { basket, setBasket, handlerBasket } = props;
 
   return (
     <div className={`${styles.side_basket} `}>
@@ -20,11 +20,11 @@ function SidePanel(props) {
 
         {
           (basket.length > 0) ?
-          <MainContent basket={basket}/> :
+          <MainContent basket={basket} setBasket={setBasket}/> :
           (stateDisp == 'ready') ?
           <MessageReady/> :
           (stateDisp == 'empty') ?
-          <MessageEmpty/> :
+          <MessageEmpty handlerBasket={handlerBasket}/> :
           ""
         }        
       </div>
@@ -34,17 +34,45 @@ function SidePanel(props) {
 
 function MainContent(props)
 {
-  const { basket } = props;
+  const { basket, setBasket } = props;
 
   let sumProducts = 0;
   basket.forEach(item => sumProducts += item.product.price );
+
+  const removeProduct = (card) => {
+    let order;
+    basket.forEach(o => {
+      if (o.id == card.id)
+      {
+        order = o;
+      }
+    });
+
+    fetch('http://192.168.0.104:5008/api/orders/'+order.id, {
+        method: 'DELETE', 
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then((response) => response.json())
+    .then((d) => {
+      const index = basket.indexOf(order);
+      if (index > -1) { 
+        basket.splice(index, 1); 
+      }
+      setBasket([...basket])
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+  }
 
   return (
     <div className={styles.content}>
       <div className={styles.product_list}>
         {
           basket.map((card) => {
-            return <BasketCard cardInfo={card} key={card.id}/>
+            return <BasketCard cardInfo={card} handlerRemove={removeProduct} key={card.id}/>
           })
         } 
       </div>
@@ -96,8 +124,10 @@ function MessageReady()
   );
 }
 
-function MessageEmpty()
+function MessageEmpty(props)
 {
+  const { handlerBasket } = props;
+
   return (
     <div className={styles.message}>
       <img
@@ -109,7 +139,7 @@ function MessageEmpty()
       <p className={styles.description}>
         Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.
       </p>
-      <button className={styles.btn}>
+      <button className={styles.btn} onClick={ () => handlerBasket(false) }>
         <img
           className={styles.btn_img}
           src="images/arrow-left.svg"

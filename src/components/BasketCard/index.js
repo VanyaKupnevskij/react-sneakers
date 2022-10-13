@@ -1,7 +1,8 @@
 import styles from "./LineCard.module.scss";
+import { priceToString } from "../../myService";
 
 function BasketCard(props) {
-  const { cardInfo } = props;
+  const { cardInfo, handlerRemove } = props;
 
   return (
     <div className={styles.card}>
@@ -14,9 +15,9 @@ function BasketCard(props) {
         <p className={styles.description}>
           {cardInfo.product.name}
         </p>
-        <span className={styles.price}>{cardInfo.product.price} грн.</span>
+        <span className={styles.price}>{ priceToString(cardInfo.product.price) } грн.</span>
       </div>
-      <button className={styles.delete}>
+      <button className={styles.delete} onClick={ () => handlerRemove(cardInfo) }>
         <img src="images/delete.svg" alt="del" />
       </button>
     </div>
