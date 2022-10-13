@@ -13,7 +13,9 @@ function SidePanel() {
                 <MainContent/> :
                 (stateDisp == 'ready') ?
                 <MessageReady/> :
-                <MessageEmpty/>
+                (stateDisp == 'empty') ?
+                <MessageEmpty/> :
+                ""
             }        
 
       </div>
