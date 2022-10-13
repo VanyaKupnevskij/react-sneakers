@@ -1,18 +1,20 @@
 import styles from "./LineCard.module.scss";
 
-function BasketCard() {
+function BasketCard(props) {
+  const { cardInfo } = props;
+
   return (
     <div className={styles.card}>
       <img
         className={styles.preview}
-        src="images/Products/01.png"
+        src={cardInfo.product.preview}
         alt="preview"
       />
       <div className={styles.info}>
         <p className={styles.description}>
-          Мужские Кроссовки Nike Air Max 270
+          {cardInfo.product.name}
         </p>
-        <span className={styles.price}>12 999 грн.</span>
+        <span className={styles.price}>{cardInfo.product.price} грн.</span>
       </div>
       <button className={styles.delete}>
         <img src="images/delete.svg" alt="del" />

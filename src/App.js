@@ -15,6 +15,8 @@ function App() {
   const [basket, setBasket] = useState([]);
   const [purchases, setPurchases] = useState([]);
 
+  const [isOpenBasket, setOpenBasket] = useState(false);
+
   const getData = () => {
     fetch('http://192.168.0.104:5008/api/products')
       .then((resp) => resp.json())
@@ -176,10 +178,17 @@ function App() {
     }
   }
 
+  const onBasketOpen = (isOpen) => {
+    setOpenBasket(isOpen);
+  }
+
   return <div className='wrapper'>
       
-      {/* <SidePanel/> */}
-      <Header/>
+      { 
+        isOpenBasket && 
+        <SidePanel basket={basket} handlerBasket={onBasketOpen}/> 
+      }
+      <Header handlerBasket={onBasketOpen} />
 
       <main className="main">
         <Banner/>

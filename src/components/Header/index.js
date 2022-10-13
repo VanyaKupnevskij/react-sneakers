@@ -1,8 +1,10 @@
 import styles from "./Header.module.scss";
 
-function Header()
+function Header(props)
 {
-    return (
+  const { handlerBasket } = props;
+
+  return (
     <header className={styles.header}>
         <div className="container">
           <div className={styles.inner}>
@@ -15,10 +17,11 @@ function Header()
                 <p className={styles.name_description}>Магазин лучших кроссовок</p>
               </div>
             </div>
+
             <nav className={styles.menu}>
               <ul className={styles.menu_list}>
                 <li className={styles.basket}>
-                  <button className={styles.basket_link}>
+                  <button className={styles.basket_link} onClick={ () => handlerBasket(true) }>
                     <img className={styles.basket_img} src="images/basket.svg" alt="basket"/>
                     <span className={styles.basket_price}>1205 грн.</span>
                   </button>

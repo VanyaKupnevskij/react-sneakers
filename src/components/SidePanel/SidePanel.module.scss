@@ -24,9 +24,30 @@
 
   .title {
     margin-bottom: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      border: 1px solid #a7a7a7;
+    }
   }
 
   .content {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
