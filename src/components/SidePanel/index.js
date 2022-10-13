@@ -1,5 +1,6 @@
 import styles from "./SidePanel.module.scss";
 import BasketCard from "../BasketCard";
+import { priceToString } from "../../myService";
 
 var stateDisp = 'empty';
 
@@ -35,6 +36,9 @@ function MainContent(props)
 {
   const { basket } = props;
 
+  let sumProducts = 0;
+  basket.forEach(item => sumProducts += item.product.price );
+
   return (
     <div className={styles.content}>
       <div className={styles.product_list}>
@@ -47,12 +51,12 @@ function MainContent(props)
       <div className={styles.total}>
         <p>Итого:</p>
         <div className={styles.result_line}></div>
-        <b>12 999 грн.</b>
+        <b>{ priceToString(sumProducts) } грн.</b>
       </div>
       <div className={styles.tax}>
         <p>Налог 5%:</p>
         <div className={styles.result_line}></div>
-        <b>1900 грн.</b>
+        <b>{ priceToString(sumProducts / 100 * 5) } грн.</b>
       </div>
       <button className={styles.btn}>
         <img
