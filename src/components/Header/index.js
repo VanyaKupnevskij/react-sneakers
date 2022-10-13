@@ -1,8 +1,9 @@
 import styles from "./Header.module.scss";
+import { priceToString } from "../../myService";
 
 function Header(props)
 {
-  const { handlerBasket } = props;
+  const { sumPrice, handlerBasket } = props;
 
   return (
     <header className={styles.header}>
@@ -23,7 +24,7 @@ function Header(props)
                 <li className={styles.basket}>
                   <button className={styles.basket_link} onClick={ () => handlerBasket(true) }>
                     <img className={styles.basket_img} src="images/basket.svg" alt="basket"/>
-                    <span className={styles.basket_price}>1205 грн.</span>
+                    <span className={styles.basket_price}>{ priceToString(sumPrice) } грн.</span>
                   </button>
                 </li>
                 <li className={styles.favorite}>

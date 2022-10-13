@@ -16,6 +16,7 @@ function App() {
   const [purchases, setPurchases] = useState([]);
 
   const [isOpenBasket, setOpenBasket] = useState(false);
+  const [sumPrice, setSumPrice] = useState(0);
 
   const getData = () => {
     fetch('http://192.168.0.104:5008/api/products')
@@ -126,7 +127,7 @@ function App() {
             "price": card.price
         },
         "count_product": 1,
-        "created_time": "2022-11-11T00:00:00",
+        "created_time": new Date().toISOString().slice(0, 19),
         "in_Basket": card.inBasket
     }
 
@@ -140,7 +141,7 @@ function App() {
           body: JSON.stringify(sendData)
       })
       .then((response) => response.json())
-      .then((d) => setBasket([...basket, d]))
+      .then((d) => { setBasket([...basket, d]); })
       .catch((error) => {
           console.error('Error:', error);
       });
@@ -179,13 +180,21 @@ function App() {
     setOpenBasket(isOpen);
   }
 
+  const onSumPrice = () => {
+    let sumProducts = 0;
+    basket.forEach(item => sumProducts += item.product.price );
+    setSumPrice(sumProducts);
+  }
+
+  useEffect(onSumPrice, [basket]);
+
   return <div className='wrapper'>
       
       { 
         isOpenBasket && 
         <SidePanel basket={basket} setBasket={setBasket} handlerBasket={onBasketOpen}/> 
       }
-      <Header handlerBasket={onBasketOpen} />
+      <Header sumPrice={sumPrice} handlerBasket={onBasketOpen} />
 
       <main className="main">
         <Banner/>
