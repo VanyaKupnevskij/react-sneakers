@@ -41,6 +41,76 @@ function App() {
       getData();
   }, []);
 
+  const onClickFavorite = (card) => {
+    card.isFavorite = !(card.isFavorite);
+
+    const sendData = {
+        "user_Id": idUser,
+        "user": {
+            "name": "Admin",
+            "password": "12345",
+            "id": 1
+        },
+        "product_Id": card.id,
+        "product": {
+            "name": card.name,
+            "preview": card.preview,
+            "price": card.price,
+            "id": card.id
+        },
+        "is_Favorite": card.isFavorite
+    }
+
+    if (card.isFavorite)
+    {
+      fetch('http://192.168.0.104:5008/api/favorites', {
+          method: 'PUT', 
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(sendData)
+      })
+      .then((response) => response.json())
+      .then((d) => setFavorites([...favorites, d]))
+      .catch((error) => {
+          console.error('Error:', error);
+      });
+    }
+    else
+    {
+      let prod;
+      favorites.forEach(o => {
+        if (o.product_Id == card.id)
+        {
+          sendData.id = o.id;
+          prod = o;
+        }
+      });
+      console.log(sendData);
+      fetch('http://192.168.0.104:5008/api/favorites', {
+          method: 'DELETE', 
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(sendData)
+      })
+      .then((response) => response.json())
+      .then((d) => {
+        const index = favorites.indexOf(prod);
+        console.log(d);
+        console.log(prod);
+        console.log(index);
+        if (index > -1) { 
+          favorites.splice(index, 1); 
+        }
+        setFavorites([...favorites])
+      })
+      .catch((error) => {
+          console.error('Error:', error);
+      });
+    }
+  };
+
   const onClickBuy = (card) => {
     card.inBasket = !(card.inBasket);
 
@@ -78,7 +148,7 @@ function App() {
     }
     else
     {
-      let order = 0;
+      let order;
       basket.forEach(o => {
         if (o.product_Id == card.id)
         {
@@ -104,7 +174,7 @@ function App() {
           console.error('Error:', error);
       });
     }
-}
+  }
 
   return <div className='wrapper'>
       
@@ -141,7 +211,7 @@ function App() {
                         card.inBasket = true;
                       }
                     });
-                    return (<Card cardInfo={card} handlerBuy={onClickBuy} key={card.id}/>)
+                    return (<Card cardInfo={card} handlerFavorite={onClickFavorite} handlerBuy={onClickBuy} key={card.id}/>)
                   })
                 }
               </div>
