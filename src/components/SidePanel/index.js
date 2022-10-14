@@ -61,7 +61,7 @@ function MainContent({ userId, basket = [], setBasket, setStateDisp })
       if (index > -1) { 
         basket.splice(index, 1); 
       }
-      setBasket([...basket])
+      setBasket(prev => [...prev])
     })
     .catch((error) => {
         console.error('Error:', error);

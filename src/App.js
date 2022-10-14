@@ -74,7 +74,7 @@ function App() {
           body: JSON.stringify(sendData)
       })
       .then((response) => response.json())
-      .then((d) => setFavorites([...favorites, d]))
+      .then((d) => setFavorites(prev => [...prev, d]))
       .catch((error) => {
           console.error('Error:', error);
       });
@@ -103,7 +103,7 @@ function App() {
         if (index > -1) { 
           favorites.splice(index, 1); 
         }
-        setFavorites([...favorites])
+        setFavorites(prev => [...prev])
       })
       .catch((error) => {
           console.error('Error:', error);
@@ -141,7 +141,7 @@ function App() {
           body: JSON.stringify(sendData)
       })
       .then((response) => response.json())
-      .then((d) => { setBasket([...basket, d]); })
+      .then((d) => { setBasket(prev => [...prev, d]); })
       .catch((error) => {
           console.error('Error:', error);
       });
@@ -168,7 +168,7 @@ function App() {
         if (index > -1) { 
           basket.splice(index, 1); 
         }
-        setBasket([...basket])
+        setBasket(prev => [...prev])
       })
       .catch((error) => {
           console.error('Error:', error);
