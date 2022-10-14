@@ -46,6 +46,28 @@
             padding: 15px 14px 16px 18px;
             cursor: pointer;
         }
+
+        &-delete {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto 8px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 0px solid #a7a7a7;
+            border-radius: 8px;
+            background-color: #fff;
+            transition: 0.2s;
+            cursor: pointer;
+        
+            &:hover {
+              border: 1px solid #a7a7a7;
+            }
+          }
     }
 
     &__items
