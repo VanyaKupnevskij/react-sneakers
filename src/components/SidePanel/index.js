@@ -3,7 +3,7 @@ import BasketCard from "../BasketCard";
 import { priceToString } from "../../myService";
 import React, { useState } from "react";
 
-function SidePanel({ userId, basket = [], setBasket, handlerBasket }) {
+function SidePanel({ sumProducts, basket = [], handlerBuy, handlerSubmit, handlerBasket }) {
 
   const [ stateDisp, setStateDisp ] = useState('empty');
 
@@ -23,7 +23,7 @@ function SidePanel({ userId, basket = [], setBasket, handlerBasket }) {
 
         {
           (basket.length > 0) ?
-          <MainContent userId={userId} basket={basket} setBasket={setBasket} setStateDisp={setStateDisp}/> :
+          <MainContent sumProducts={sumProducts} basket={basket} handlerBuy={handlerBuy} handlerSubmit={handlerSubmit} setStateDisp={setStateDisp}/> :
           (stateDisp == 'ready') ?
           <MessageReady handlerBasket={handlerBasket}/> :
           (stateDisp == 'empty') ?
@@ -35,59 +35,19 @@ function SidePanel({ userId, basket = [], setBasket, handlerBasket }) {
   );
 }
 
-function MainContent({ userId, basket = [], setBasket, setStateDisp })
+function MainContent({ sumProducts, basket = [], handlerBuy, handlerSubmit, setStateDisp })
 {
-  let sumProducts = 0;
-  basket.forEach(item => sumProducts += item.product.price );
-
-  const removeProduct = (card) => {
-    let order;
-    basket.forEach(o => {
-      if (o.id == card.id)
-      {
-        order = o;
-      }
-    });
-
-    fetch('http://192.168.0.104:5008/api/orders/'+order.id, {
-        method: 'DELETE', 
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-    .then((response) => response.json())
-    .then((d) => {
-      const index = basket.indexOf(order);
-      if (index > -1) { 
-        basket.splice(index, 1); 
-      }
-      setBasket(prev => [...prev])
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-  }
-
   const submitBuy = () => {
-    fetch('http://192.168.0.104:5008/api/orders/buy/'+userId, {
-        method: 'PUT'
-    })
-    .then((d) => {
-      setBasket([]);
-      setStateDisp('ready');
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+    handlerSubmit();
+    setStateDisp('ready');
   }
 
   return (
     <div className={styles.content}>
       <div className={styles.product_list}>
         {
-          basket.map((card) => {
-            return <BasketCard cardInfo={card} handlerRemove={removeProduct} key={card.id}/>
-          })
+          basket.map((card) => 
+            <BasketCard cardInfo={card} handlerRemove={() => handlerBuy(card.product, card.in_Basket)} key={card.id}/>)
         } 
       </div>
       <div className={styles.total}>

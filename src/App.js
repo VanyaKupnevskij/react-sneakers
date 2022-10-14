@@ -5,7 +5,6 @@ import Card from "./components/Card";
 import Header from "./components/Header";
 import Banner from "./components/Banner";
 import SidePanel from "./components/SidePanel";
-import DB_cards from "./DB_cards";
 
 function App() {
   const idUser = 1;
@@ -18,42 +17,26 @@ function App() {
   const [sumPrice, setSumPrice] = useState(0);
   const [searchValue, setSearchValue] = useState("");
 
-  const getData = () => {
+  useEffect(() => {
     fetch("http://192.168.0.104:5008/api/products")
       .then((resp) => resp.json())
-      .then((res) => {
-        return setProducts(res);
-      })
-      .catch((err) => console.log(err));
+      .then((res) => setProducts(res));
 
     fetch("http://192.168.0.104:5008/api/favorites/" + idUser)
       .then((resp) => resp.json())
-      .then((res) => {
-        return setFavorites(res);
-      })
-      .catch((err) => console.log(err));
+      .then((res) => setFavorites(res));
 
     fetch("http://192.168.0.104:5008/api/orders/basket/" + idUser)
       .then((resp) => resp.json())
-      .then((res) => {
-        return setBasket(res);
-      })
-      .catch((err) => console.log(err));
+      .then((res) => setBasket(res));
 
     fetch("http://192.168.0.104:5008/api/orders/purchases/" + idUser)
       .then((resp) => resp.json())
-      .then((res) => {
-        return setPurchases(res);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    getData();
+      .then((res) => setPurchases(res));
   }, []);
 
-  const onClickFavorite = (card) => {
-    card.isFavorite = !card.isFavorite;
+  function onClickFavorite(card, isFavorite) {
+    card.isFavorite = !isFavorite;
 
     const sendData = {
       user_Id: idUser,
@@ -68,55 +51,31 @@ function App() {
         preview: card.preview,
         price: card.price,
         id: card.id,
-      },
-      is_Favorite: card.isFavorite,
+      }
     };
 
     if (card.isFavorite) {
       fetch("http://192.168.0.104:5008/api/favorites", {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(sendData),
+        body: JSON.stringify(sendData)
       })
-        .then((response) => response.json())
-        .then((d) => setFavorites((prev) => [...prev, d]))
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    } else {
-      let prod;
-      favorites.forEach((o) => {
-        if (o.product_Id == card.id) {
-          sendData.id = o.id;
-          prod = o;
-        }
-      });
+      .then((response) => response.json())
+      .then((d) => setFavorites((prev) => [...prev, d]));
+    } 
+    else {
+      const idProd = favorites.find((item) => item.product_Id == card.id).id;
 
-      fetch("http://192.168.0.104:5008/api/favorites", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(sendData),
-      })
-        .then((response) => response.json())
-        .then((d) => {
-          const index = favorites.indexOf(prod);
-          if (index > -1) {
-            favorites.splice(index, 1);
-          }
-          setFavorites((prev) => [...prev]);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      fetch("http://192.168.0.104:5008/api/favorites/" + idProd, {method: "DELETE"})
+      .then((response) => response.json())
+      .then(() => setFavorites((prev) => prev.filter((item) => item.product_Id !== card.id)));
     }
   };
 
-  const onClickBuy = (card) => {
-    card.inBasket = !card.inBasket;
+  function onClickBuy(card, inBasket) {
+    card.inBasket = !inBasket;
 
     const sendData = {
       user_Id: idUser,
@@ -132,7 +91,7 @@ function App() {
       },
       count_product: 1,
       created_time: new Date().toISOString().slice(0, 19),
-      in_Basket: card.inBasket,
+      in_Basket: card.inBasket
     };
 
     if (card.inBasket) {
@@ -141,48 +100,25 @@ function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(sendData),
+        body: JSON.stringify(sendData)
       })
-        .then((response) => response.json())
-        .then((d) => {
-          setBasket((prev) => [...prev, d]);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    } else {
-      let order;
-      basket.forEach((o) => {
-        if (o.product_Id == card.id) {
-          order = o;
-        }
-      });
+      .then((response) => response.json())
+      .then((d) => setBasket((prev) => [...prev, d]));
+    } 
+    else {
+      const idOrder = basket.find((item) => item.product_Id == card.id).id;
 
-      fetch("http://192.168.0.104:5008/api/orders/" + order.id, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((d) => {
-          const index = basket.indexOf(order);
-          if (index > -1) {
-            basket.splice(index, 1);
-          }
-          setBasket((prev) => [...prev]);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      fetch("http://192.168.0.104:5008/api/orders/" + idOrder, {method: "DELETE"})
+      .then((response) => response.json())
+      .then(() => setBasket((prev) => prev.filter((item) => item.product_Id !== card.id)));
     }
   };
 
-  const onBasketOpen = (isOpen) => {
+  function onBasketOpen(isOpen) {
     setOpenBasket(isOpen);
   };
 
-  const onSumPrice = () => {
+  function onSumPrice() {
     let sumProducts = 0;
     basket.forEach((item) => (sumProducts += item.product.price));
     setSumPrice(sumProducts);
@@ -190,21 +126,19 @@ function App() {
 
   useEffect(onSumPrice, [basket]);
 
-  const onChangeSearchInput = (event) => {
-    setSearchValue(event.target.value);
-  };
-
-  const onClearSearch = () => {
-    setSearchValue("");
-  };
+  function onSubmitBuy() {
+    fetch('http://192.168.0.104:5008/api/orders/buy/' + idUser, { method: 'PUT' })
+    .then(() => setBasket([]));
+  }
 
   return (
     <div className="wrapper">
       {isOpenBasket && (
         <SidePanel
-          userId={idUser}
+          sumProducts={sumPrice}
           basket={basket}
-          setBasket={setBasket}
+          handlerBuy={onClickBuy}
+          handlerSubmit={onSubmitBuy}
           handlerBasket={onBasketOpen}
         />
       )}
@@ -230,12 +164,12 @@ function App() {
                   type="text"
                   placeholder="Search..."
                   value={searchValue}
-                  onChange={onChangeSearchInput}
+                  onChange={(event) => setSearchValue(event.target.value)}
                 />
                 {searchValue && (
                   <button
                     className="products__search-delete"
-                    onClick={onClearSearch}
+                    onClick={() => setSearchValue("")}
                   >
                     <img src="images/delete.svg" alt="del" />
                   </button>
@@ -243,29 +177,33 @@ function App() {
               </div>
               <div className="products__items">
                 {products
-                  .filter(prod => prod.name.toLowerCase().includes(searchValue.toLocaleLowerCase()))
+                  .filter((prod) =>
+                    prod.name
+                      .toLowerCase()
+                      .includes(searchValue.toLocaleLowerCase())
+                  )
                   .map((card) => {
-                  card.isFavorite = false;
-                  card.inBasket = false;
-                  favorites.forEach((o) => {
-                    if (o.product_Id == card.id) {
-                      card.isFavorite = true;
-                    }
-                  });
-                  basket.forEach((o) => {
-                    if (o.product_Id == card.id) {
-                      card.inBasket = true;
-                    }
-                  });
-                  return (
-                    <Card
-                      cardInfo={card}
-                      handlerFavorite={onClickFavorite}
-                      handlerBuy={onClickBuy}
-                      key={card.id}
-                    />
-                  );
-                })}
+                    card.isFavorite = false;
+                    card.inBasket = false;
+                    favorites.forEach((o) => {
+                      if (o.product_Id == card.id) {
+                        card.isFavorite = true;
+                      }
+                    });
+                    basket.forEach((o) => {
+                      if (o.product_Id == card.id) {
+                        card.inBasket = true;
+                      }
+                    });
+                    return (
+                      <Card
+                        cardInfo={card}
+                        handlerFavorite={onClickFavorite}
+                        handlerBuy={onClickBuy}
+                        key={card.id}
+                      />
+                    );
+                  })}
               </div>
             </div>
           </div>
