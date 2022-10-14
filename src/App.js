@@ -1,10 +1,12 @@
 import logo from "./logo.svg";
 import React, { useState, useEffect } from "react";
+import { Route, Routes } from 'react-router-dom';
 import API from "./apiAxios";
 import "./App.scss";
-import Card from "./components/Card";
+import Home from "./pages/Home";
+import Favorites from "./pages/Favorites";
+import Profile from "./pages/Profile";
 import Header from "./components/Header";
-import Banner from "./components/Banner";
 import SidePanel from "./components/SidePanel";
 
 function App() {
@@ -117,71 +119,33 @@ function App() {
       )}
       <Header sumPrice={sumPrice} handlerBasket={onBasketOpen} />
 
-      <main className="main">
-        <Banner />
-
-        <section className="products">
-          <div className="container">
-            <div className="products__inner">
-              <h1 className="products__title">
-                {searchValue
-                  ? "Поиск по запросу: " + searchValue
-                  : "Все кроссовки"}
-              </h1>
-              <div className="products__search">
-                <button className="products__search-btn">
-                  <img src="images/search.svg" alt="search" />
-                </button>
-                <input
-                  className="products__search-input"
-                  type="text"
-                  placeholder="Search..."
-                  value={searchValue}
-                  onChange={(event) => setSearchValue(event.target.value)}
-                />
-                {searchValue && (
-                  <button
-                    className="products__search-delete"
-                    onClick={() => setSearchValue("")}
-                  >
-                    <img src="images/delete.svg" alt="del" />
-                  </button>
-                )}
-              </div>
-              <div className="products__items">
-                {products
-                  .filter((prod) =>
-                    prod.name
-                      .toLowerCase()
-                      .includes(searchValue.toLocaleLowerCase())
-                  )
-                  .map((card) => {
-                    card.isFavorite = false;
-                    card.inBasket = false;
-                    favorites.forEach((o) => {
-                      if (o.product_Id == card.id) {
-                        card.isFavorite = true;
-                      }
-                    });
-                    basket.forEach((o) => {
-                      if (o.product_Id == card.id) {
-                        card.inBasket = true;
-                      }
-                    });
-                    return (
-                      <Card
-                        cardInfo={card}
-                        handlerFavorite={onClickFavorite}
-                        handlerBuy={onClickBuy}
-                        key={card.id}
-                      />
-                    );
-                  })}
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
+      <Routes>
+          <Route index exact path="/" element={ 
+            <Home searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              products={products}
+              favorites={favorites}
+              basket={basket}
+              onClickBuy={onClickBuy}
+              onClickFavorite={onClickFavorite} /> 
+          }/>
+          <Route strict exact path="/favorites/" element={ 
+            <Favorites 
+              products={products}
+              favorites={favorites}
+              basket={basket}
+              onClickBuy={onClickBuy}
+              onClickFavorite={onClickFavorite} /> 
+          }/>
+          <Route strict exact path="/profile/" element={ 
+            <Profile 
+              purchases={purchases}
+              favorites={favorites}
+              basket={basket}
+              onClickBuy={onClickBuy}
+              onClickFavorite={onClickFavorite} /> 
+          }/>
+      </Routes>
     </div>
   );
 }
