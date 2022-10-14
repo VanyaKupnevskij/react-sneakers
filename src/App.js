@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import React, { useState, useEffect } from "react";
+import API from "./apiAxios";
 import "./App.scss";
 import Card from "./components/Card";
 import Header from "./components/Header";
@@ -18,21 +19,10 @@ function App() {
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    fetch("http://192.168.0.104:5008/api/products")
-      .then((resp) => resp.json())
-      .then((res) => setProducts(res));
-
-    fetch("http://192.168.0.104:5008/api/favorites/" + idUser)
-      .then((resp) => resp.json())
-      .then((res) => setFavorites(res));
-
-    fetch("http://192.168.0.104:5008/api/orders/basket/" + idUser)
-      .then((resp) => resp.json())
-      .then((res) => setBasket(res));
-
-    fetch("http://192.168.0.104:5008/api/orders/purchases/" + idUser)
-      .then((resp) => resp.json())
-      .then((res) => setPurchases(res));
+    API.get("products").then((res) => setProducts(res.data));
+    API.get("favorites/" + idUser).then((res) => setFavorites(res.data));
+    API.get("orders/basket/" + idUser).then((res) => setBasket(res.data));
+    API.get("orders/purchases/" + idUser).then((res) => setPurchases(res.data));
   }, []);
 
   function onClickFavorite(card, isFavorite) {
@@ -55,22 +45,14 @@ function App() {
     };
 
     if (card.isFavorite) {
-      fetch("http://192.168.0.104:5008/api/favorites", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(sendData)
-      })
-      .then((response) => response.json())
-      .then((d) => setFavorites((prev) => [...prev, d]));
+      API.post("favorites", sendData)
+        .then((d) => setFavorites((prev) => [...prev, d.data]));
     } 
     else {
       const idProd = favorites.find((item) => item.product_Id == card.id).id;
 
-      fetch("http://192.168.0.104:5008/api/favorites/" + idProd, {method: "DELETE"})
-      .then((response) => response.json())
-      .then(() => setFavorites((prev) => prev.filter((item) => item.product_Id !== card.id)));
+      API.delete("favorites/" + idProd)
+        .then(() => setFavorites((prev) => prev.filter((item) => item.product_Id !== card.id)));
     }
   };
 
@@ -95,22 +77,14 @@ function App() {
     };
 
     if (card.inBasket) {
-      fetch("http://192.168.0.104:5008/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(sendData)
-      })
-      .then((response) => response.json())
-      .then((d) => setBasket((prev) => [...prev, d]));
+      API.post("orders", sendData)
+        .then((d) => setBasket((prev) => [...prev, d.data]));
     } 
     else {
       const idOrder = basket.find((item) => item.product_Id == card.id).id;
 
-      fetch("http://192.168.0.104:5008/api/orders/" + idOrder, {method: "DELETE"})
-      .then((response) => response.json())
-      .then(() => setBasket((prev) => prev.filter((item) => item.product_Id !== card.id)));
+      API.delete("orders/" + idOrder)
+        .then(() => setBasket((prev) => prev.filter((item) => item.product_Id !== card.id)));
     }
   };
 
@@ -127,8 +101,7 @@ function App() {
   useEffect(onSumPrice, [basket]);
 
   function onSubmitBuy() {
-    fetch('http://192.168.0.104:5008/api/orders/buy/' + idUser, { method: 'PUT' })
-    .then(() => setBasket([]));
+    API.put("orders/buy/" + idUser).then(() => setBasket([]));
   }
 
   return (
