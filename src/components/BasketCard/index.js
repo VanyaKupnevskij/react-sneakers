@@ -1,8 +1,7 @@
 import styles from "./LineCard.module.scss";
 import { priceToString } from "../../myService";
 
-function BasketCard(props) {
-  const { cardInfo, handlerRemove } = props;
+function BasketCard({ cardInfo, handlerRemove }) {
 
   return (
     <div className={styles.card}>

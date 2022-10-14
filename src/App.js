@@ -192,7 +192,7 @@ function App() {
       
       { 
         isOpenBasket && 
-        <SidePanel basket={basket} setBasket={setBasket} handlerBasket={onBasketOpen}/> 
+        <SidePanel userId={idUser} basket={basket} setBasket={setBasket} handlerBasket={onBasketOpen}/> 
       }
       <Header sumPrice={sumPrice} handlerBasket={onBasketOpen} />
 

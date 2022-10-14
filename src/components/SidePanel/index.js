@@ -1,18 +1,21 @@
 import styles from "./SidePanel.module.scss";
 import BasketCard from "../BasketCard";
 import { priceToString } from "../../myService";
+import React, { useState } from "react";
 
-var stateDisp = 'empty';
+function SidePanel({ userId, basket = [], setBasket, handlerBasket }) {
 
-function SidePanel(props) {
-  const { basket, setBasket, handlerBasket } = props;
+  const [ stateDisp, setStateDisp ] = useState('empty');
 
   return (
     <div className={`${styles.side_basket} `}>
       <div className={styles.inner}>
         <h2 className={styles.title}>
           Корзина
-          <button className={styles.close} onClick={ () => handlerBasket(false)}>
+          <button className={styles.close} onClick={ () => {
+              handlerBasket(false);
+              setStateDisp('empty');
+            }}>
             <img src="images/delete.svg" alt="del" />
           </button>
         </h2>
@@ -20,9 +23,9 @@ function SidePanel(props) {
 
         {
           (basket.length > 0) ?
-          <MainContent basket={basket} setBasket={setBasket}/> :
+          <MainContent userId={userId} basket={basket} setBasket={setBasket} setStateDisp={setStateDisp}/> :
           (stateDisp == 'ready') ?
-          <MessageReady/> :
+          <MessageReady handlerBasket={handlerBasket}/> :
           (stateDisp == 'empty') ?
           <MessageEmpty handlerBasket={handlerBasket}/> :
           ""
@@ -32,10 +35,8 @@ function SidePanel(props) {
   );
 }
 
-function MainContent(props)
+function MainContent({ userId, basket = [], setBasket, setStateDisp })
 {
-  const { basket, setBasket } = props;
-
   let sumProducts = 0;
   basket.forEach(item => sumProducts += item.product.price );
 
@@ -67,6 +68,19 @@ function MainContent(props)
     });
   }
 
+  const submitBuy = () => {
+    fetch('http://192.168.0.104:5008/api/orders/buy/'+userId, {
+        method: 'PUT'
+    })
+    .then((d) => {
+      setBasket([]);
+      setStateDisp('ready');
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+  }
+
   return (
     <div className={styles.content}>
       <div className={styles.product_list}>
@@ -86,7 +100,7 @@ function MainContent(props)
         <div className={styles.result_line}></div>
         <b>{ priceToString(sumProducts / 100 * 5) } грн.</b>
       </div>
-      <button className={styles.btn}>
+      <button className={styles.btn} onClick={ submitBuy }>
         <img
           className={styles.btn_img}
           src="images/arrow-right.svg"
@@ -98,7 +112,7 @@ function MainContent(props)
   );
 }
 
-function MessageReady()
+function MessageReady({ handlerBasket })
 {
   return (
     <div className={styles.message}>
@@ -110,9 +124,9 @@ function MessageReady()
       />
       <h3>Заказ оформлен!</h3>
       <p className={styles.description}>
-        Ваш заказ #18 скоро будет передан курьерской доставке.
+        Ваш заказ скоро будет передан курьерской доставке.
       </p>
-      <button className={styles.btn}>
+      <button className={styles.btn} onClick={ () => handlerBasket(false) }>
         <img
           className={styles.btn_img}
           src="images/arrow-left.svg"
@@ -124,10 +138,8 @@ function MessageReady()
   );
 }
 
-function MessageEmpty(props)
+function MessageEmpty({ handlerBasket })
 {
-  const { handlerBasket } = props;
-
   return (
     <div className={styles.message}>
       <img

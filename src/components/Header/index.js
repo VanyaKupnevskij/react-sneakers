@@ -1,10 +1,8 @@
 import styles from "./Header.module.scss";
 import { priceToString } from "../../myService";
 
-function Header(props)
+function Header({ sumPrice = 0, handlerBasket })
 {
-  const { sumPrice, handlerBasket } = props;
-
   return (
     <header className={styles.header}>
         <div className="container">

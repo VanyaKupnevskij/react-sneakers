@@ -3,10 +3,8 @@ import { priceToString } from "../../myService";
 
 import styles from "./Card.module.scss";
 
-function Card(props)
-{
-    const { cardInfo, handlerBuy, handlerFavorite } = props;
-    
+function Card({ cardInfo, handlerBuy, handlerFavorite })
+{    
     const clickFavoriteHandler = (info) => {
         handlerFavorite(info);
     }
