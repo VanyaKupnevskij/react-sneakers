@@ -1,15 +1,13 @@
 import Card from "../components/Card";
 import Banner from "../components/Banner";
+import AppContext from "../context";
+import { useContext } from "react";
 
-function Home({ searchValue,
-    setSearchValue,
-    products,
-    favorites,
-    basket,
-    onClickBuy,
-    onClickFavorite }) {
+function Home({ searchValue, setSearchValue }) {
+  const { basket, products, favorites } = useContext(AppContext);
+
     return (
-        <main className="main">
+      <main className="main">
         <Banner />
 
         <section className="products">
@@ -48,23 +46,12 @@ function Home({ searchValue,
                       .includes(searchValue.toLocaleLowerCase())
                   )
                   .map((card) => {
-                    card.isFavorite = false;
-                    card.inBasket = false;
-                    favorites.forEach((o) => {
-                      if (o.product_Id == card.id) {
-                        card.isFavorite = true;
-                      }
-                    });
-                    basket.forEach((o) => {
-                      if (o.product_Id == card.id) {
-                        card.inBasket = true;
-                      }
-                    });
+                    card.isFavorite = favorites.some(obj => obj.product_Id == card.id);
+                    card.inBasket = basket.some(obj => obj.product_Id == card.id);;
+
                     return (
                       <Card
                         cardInfo={card}
-                        handlerFavorite={onClickFavorite}
-                        handlerBuy={onClickBuy}
                         key={card.id}
                       />
                     );

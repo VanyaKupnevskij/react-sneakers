@@ -1,11 +1,10 @@
 import Card from "../components/Card";
+import AppContext from "../context";
+import { useContext } from "react";
 
-function Favorites({
-    products,
-    favorites,
-    basket,
-    onClickBuy,
-    onClickFavorite }) {
+function Favorites() {
+  const { basket, favorites } = useContext(AppContext);
+
     return (
       <main className="main">
 
@@ -24,8 +23,6 @@ function Favorites({
                     return (
                       <Card
                         cardInfo={card.product}
-                        handlerFavorite={onClickFavorite}
-                        handlerBuy={onClickBuy}
                         key={card.id}
                       />
                     );

@@ -1,10 +1,12 @@
 import styles from "./SidePanel.module.scss";
 import BasketCard from "../BasketCard";
 import { priceToString } from "../../myService";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import AppContext from "../../context";
 
-function SidePanel({ sumProducts, basket = [], handlerBuy, handlerSubmit, handlerBasket }) {
+function SidePanel({ sumProducts, handlerBuy, handlerSubmit, handlerBasket }) {
 
+  const { basket } = useContext(AppContext);
   const [ stateDisp, setStateDisp ] = useState('empty');
 
   return (
@@ -23,7 +25,7 @@ function SidePanel({ sumProducts, basket = [], handlerBuy, handlerSubmit, handle
 
         {
           (basket.length > 0) ?
-          <MainContent sumProducts={sumProducts} basket={basket} handlerBuy={handlerBuy} handlerSubmit={handlerSubmit} setStateDisp={setStateDisp}/> :
+          <MainContent sumProducts={sumProducts} handlerBuy={handlerBuy} handlerSubmit={handlerSubmit} setStateDisp={setStateDisp}/> :
           (stateDisp == 'ready') ?
           <MessageReady handlerBasket={handlerBasket}/> :
           (stateDisp == 'empty') ?
@@ -35,8 +37,10 @@ function SidePanel({ sumProducts, basket = [], handlerBuy, handlerSubmit, handle
   );
 }
 
-function MainContent({ sumProducts, basket = [], handlerBuy, handlerSubmit, setStateDisp })
+function MainContent({ sumProducts, handlerBuy, handlerSubmit, setStateDisp })
 {
+  const { basket } = useContext(AppContext);
+
   const submitBuy = () => {
     handlerSubmit();
     setStateDisp('ready');

@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import React, { useState, useEffect } from "react";
 import { Route, Routes } from 'react-router-dom';
+import AppContext from "./context";
 import API from "./apiAxios";
 import "./App.scss";
 import Home from "./pages/Home";
@@ -116,46 +117,32 @@ function App() {
   }
 
   return (
-    <div className="wrapper">
-      {isOpenBasket && (
-        <SidePanel
-          sumProducts={sumPrice}
-          basket={basket}
-          handlerBuy={onClickBuy}
-          handlerSubmit={onSubmitBuy}
-          handlerBasket={onBasketOpen}
-        />
-      )}
-      <Header sumPrice={sumPrice} handlerBasket={onBasketOpen} />
+    <AppContext.Provider value={{ products, favorites, basket, purchases, onClickBuy, onClickFavorite }}>
+      <div className="wrapper">
+        {isOpenBasket && (
+          <SidePanel
+            sumProducts={sumPrice}
+            handlerBuy={onClickBuy}
+            handlerSubmit={onSubmitBuy}
+            handlerBasket={onBasketOpen}
+          />
+        )}
+        <Header sumPrice={sumPrice} handlerBasket={onBasketOpen} />
 
-      <Routes>
-          <Route index exact path="/" element={ 
-            <Home searchValue={searchValue}
-              setSearchValue={setSearchValue}
-              products={products}
-              favorites={favorites}
-              basket={basket}
-              onClickBuy={onClickBuy}
-              onClickFavorite={onClickFavorite} /> 
-          }/>
-          <Route strict exact path="/favorites/" element={ 
-            <Favorites 
-              products={products}
-              favorites={favorites}
-              basket={basket}
-              onClickBuy={onClickBuy}
-              onClickFavorite={onClickFavorite} /> 
-          }/>
-          <Route strict exact path="/profile/" element={ 
-            <Profile 
-              purchases={purchases}
-              favorites={favorites}
-              basket={basket}
-              onClickBuy={onClickBuy}
-              onClickFavorite={onClickFavorite} /> 
-          }/>
-      </Routes>
-    </div>
+        <Routes>
+            <Route index exact path="/" element={ 
+              <Home searchValue={searchValue}
+                setSearchValue={setSearchValue}/> 
+            }/>
+            <Route strict exact path="/favorites/" element={ 
+              <Favorites/> 
+            }/>
+            <Route strict exact path="/profile/" element={ 
+              <Profile/> 
+            }/>
+        </Routes>
+      </div>
+    </AppContext.Provider>
   );
 }
 
