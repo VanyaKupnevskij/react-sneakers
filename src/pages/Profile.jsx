@@ -13,23 +13,14 @@ function Profile({
           <div className="container">
             <div className="products__inner">
               <h1 className="products__title">
-                Profile
+                Мои покупки
               </h1>
               <div className="products__items">
                 {
                   purchases.map((card) => {
-                    card.product.isFavorite = false;
-                    card.product.inBasket = false;
-                    favorites.forEach((o) => {
-                      if (o.product_Id == card.product.id) {
-                        card.product.isFavorite = true;
-                      }
-                    });
-                    basket.forEach((o) => {
-                      if (o.product_Id == card.product.id) {
-                        card.product.inBasket = true;
-                      }
-                    });
+                    card.product.isFavorite = favorites.some(obj => obj.product_Id == card.product_Id);
+                    card.product.inBasket = basket.some(obj => obj.product_Id == card.product_Id);
+
                     return (
                       <Card
                         cardInfo={card.product}

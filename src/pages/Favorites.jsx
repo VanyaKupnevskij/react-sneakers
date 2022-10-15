@@ -13,18 +13,14 @@ function Favorites({
           <div className="container">
             <div className="products__inner">
               <h1 className="products__title">
-                Favorites
+                Мои закладки
               </h1>
               <div className="products__items">
                 {
                   favorites.map((card) => {
                     card.product.isFavorite = true;
-                    card.product.inBasket = false;
-                    basket.forEach((o) => {
-                      if (o.product_Id == card.product.id) {
-                        card.product.inBasket = true;
-                      }
-                    });
+                    card.product.inBasket = basket.some(obj => obj.product_Id == card.product_Id);
+
                     return (
                       <Card
                         cardInfo={card.product}
