@@ -30,21 +30,25 @@ function Home({ searchValue, setSearchValue }) {
                 <button className="products__search-btn">
                   <img src="images/search.svg" alt="search" />
                 </button>
-                <input
-                  className="products__search-input"
-                  type="text"
-                  placeholder="Search..."
-                  value={searchValue}
-                  onChange={(event) => setSearchValue(event.target.value)}
-                />
-                {searchValue && (
-                  <button
-                    className="products__search-delete"
-                    onClick={() => setSearchValue("")}
-                  >
-                    <img src="images/delete.svg" alt="del" />
-                  </button>
-                )}
+                { isLoading == false &&
+                  <>
+                    <input
+                      className="products__search-input"
+                      type="text"
+                      placeholder="Search..."
+                      value={searchValue}
+                      onChange={(event) => setSearchValue(event.target.value)}
+                    />
+                    {searchValue && (
+                      <button
+                        className="products__search-delete"
+                        onClick={() => setSearchValue("")}
+                      >
+                        <img src="images/delete.svg" alt="del" />
+                      </button>
+                    )}
+                  </>
+                }
               </div>
               <div className="products__items">
                 {

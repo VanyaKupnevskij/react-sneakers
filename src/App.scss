@@ -80,3 +80,15 @@
     }
 
 }
+
+@media screen and (max-width: 920px) {
+    .products__items {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .products__items {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
