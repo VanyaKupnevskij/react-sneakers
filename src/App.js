@@ -20,11 +20,20 @@ function App() {
   const [sumPrice, setSumPrice] = useState(0);
   const [searchValue, setSearchValue] = useState("");
 
+  async function getData() {
+    const favoritesResp = await API.get("favorites/" + idUser);
+    const basketResp = await API.get("orders/basket/" + idUser);
+    const purchasesResp = await API.get("orders/purchases/" + idUser);
+    const productsResp = await API.get("products");
+
+    setFavorites(favoritesResp.data)
+    setBasket(basketResp.data)
+    setPurchases(purchasesResp.data)
+    setProducts(productsResp.data)
+  }
+
   useEffect(() => {
-    API.get("products").then((res) => setProducts(res.data));
-    API.get("favorites/" + idUser).then((res) => setFavorites(res.data));
-    API.get("orders/basket/" + idUser).then((res) => setBasket(res.data));
-    API.get("orders/purchases/" + idUser).then((res) => setPurchases(res.data));
+    getData();
   }, []);
 
   function onClickFavorite(card, isFavorite) {
