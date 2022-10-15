@@ -1,10 +1,18 @@
 import Card from "../components/Card";
 import Banner from "../components/Banner";
+import CardLoader from "../components/CardLoader";
 import AppContext from "../context";
 import { useContext } from "react";
 
+function PrintCard(card, isLoading) {
+  if (isLoading)
+    return <CardLoader/>;
+  else
+    return <Card cardInfo={card} key={card.id}/>; 
+}
+
 function Home({ searchValue, setSearchValue }) {
-  const { basket, products, favorites } = useContext(AppContext);
+  const { basket, products, favorites, isLoading } = useContext(AppContext);
 
     return (
       <main className="main">
@@ -39,23 +47,22 @@ function Home({ searchValue, setSearchValue }) {
                 )}
               </div>
               <div className="products__items">
-                {products
-                  .filter((prod) =>
-                    prod.name
-                      .toLowerCase()
-                      .includes(searchValue.toLocaleLowerCase())
-                  )
-                  .map((card) => {
-                    card.isFavorite = favorites.some(obj => obj.product_Id == card.id);
-                    card.inBasket = basket.some(obj => obj.product_Id == card.id);;
+                {
+                  isLoading ?
+                    [...Array(8)].map(card => { return PrintCard(card, isLoading) })
+                  : 
+                  products
+                    .filter((prod) =>
+                      prod.name
+                        .toLowerCase()
+                        .includes(searchValue.toLocaleLowerCase())
+                    )
+                    .map((card) => {
+                      card.isFavorite = favorites.some(obj => obj.product_Id == card.id);
+                      card.inBasket = basket.some(obj => obj.product_Id == card.id);;
 
-                    return (
-                      <Card
-                        cardInfo={card}
-                        key={card.id}
-                      />
-                    );
-                  })}
+                      return PrintCard(card, isLoading);
+                    })}
               </div>
             </div>
           </div>

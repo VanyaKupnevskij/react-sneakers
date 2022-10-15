@@ -19,13 +19,16 @@ function App() {
 
   const [isOpenBasket, setOpenBasket] = useState(false);
   const [sumPrice, setSumPrice] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState("");
 
   async function getData() {
+    setIsLoading(true);
     const favoritesResp = await API.get("favorites/" + idUser);
     const basketResp = await API.get("orders/basket/" + idUser);
     const purchasesResp = await API.get("orders/purchases/" + idUser);
     const productsResp = await API.get("products");
+    setIsLoading(false);
 
     setFavorites(favoritesResp.data)
     setBasket(basketResp.data)
@@ -117,7 +120,7 @@ function App() {
   }
 
   return (
-    <AppContext.Provider value={{ products, favorites, basket, purchases, onClickBuy, onClickFavorite }}>
+    <AppContext.Provider value={{ products, favorites, basket, purchases, isLoading, onClickBuy, onClickFavorite }}>
       <div className="wrapper">
         {isOpenBasket && (
           <SidePanel
