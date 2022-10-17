@@ -137,10 +137,10 @@ function App() {
               <Home searchValue={searchValue}
                 setSearchValue={setSearchValue}/> 
             }/>
-            <Route strict exact path="/react-sneakers/favorites/" element={ 
+            <Route strict exact path="react-sneakers/favorites/" element={ 
               <Favorites/> 
             }/>
-            <Route strict exact path="react-sneakers//profile/" element={ 
+            <Route strict exact path="react-sneakers/profile/" element={ 
               <Profile/> 
             }/>
         </Routes>
