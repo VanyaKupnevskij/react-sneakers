@@ -24,10 +24,12 @@ function App() {
 
   async function getData() {
     setIsLoading(true);
-    const favoritesResp = await API.get("favorites/" + idUser);
-    const basketResp = await API.get("orders/basket/" + idUser);
-    const purchasesResp = await API.get("orders/purchases/" + idUser);
-    const productsResp = await API.get("products");
+    const [ favoritesResp, basketResp, purchasesResp, productsResp ] = await Promise.all([
+      API.get("favorites/" + idUser),
+      API.get("orders/basket/" + idUser),
+      API.get("orders/purchases/" + idUser),
+      API.get("products")
+    ]);
     setIsLoading(false);
 
     setFavorites(favoritesResp.data)
@@ -108,9 +110,7 @@ function App() {
   };
 
   function onSumPrice() {
-    let sumProducts = 0;
-    basket.forEach((item) => (sumProducts += item.product.price));
-    setSumPrice(sumProducts);
+    setSumPrice(basket.reduce((sum, item) => sum + item.product.price, 0));
   };
 
   useEffect(onSumPrice, [basket]);
