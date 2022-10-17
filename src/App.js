@@ -133,14 +133,14 @@ function App() {
         <Header sumPrice={sumPrice} handlerBasket={onBasketOpen} />
 
         <Routes>
-            <Route index exact path="/" element={ 
+            <Route index exact path="react-sneakers/" element={ 
               <Home searchValue={searchValue}
                 setSearchValue={setSearchValue}/> 
             }/>
-            <Route strict exact path="/favorites/" element={ 
+            <Route strict exact path="/react-sneakers/favorites/" element={ 
               <Favorites/> 
             }/>
-            <Route strict exact path="/profile/" element={ 
+            <Route strict exact path="react-sneakers//profile/" element={ 
               <Profile/> 
             }/>
         </Routes>
