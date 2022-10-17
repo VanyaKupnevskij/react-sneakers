@@ -8,7 +8,7 @@ function Header({ sumPrice = 0, handlerBasket })
     <header className={styles.header}>
         <div className="container">
           <div className={styles.inner}>
-            <Link to=".">
+            <Link to="">
               <div className={styles.name_block}>
                   <span>
                     <img className={styles.logo_img} src="images/logo.png" alt="logo"/>
